@@ -1,5 +1,6 @@
 @tool
 extends EditorInspectorPlugin
+const TARGET_SCRIPT_PATH: String = "res://scripts/terrain_atlas_pattern_placer.gd"
 
 # File: addons/terrain_pattern_tools/terrain_pattern_placer_inspector.gd
 # TerrainAtlasPatternPlacer.gd 用インスペクタ拡張
@@ -181,30 +182,21 @@ class PatternGridPreviewControl:
 			y += 1
 
 
+
 # 対象が TerrainAtlasPatternPlacer か判定
 func _is_target_object(obj: Object) -> bool:
 	if obj == null:
 		return false
 
-	var s = obj.get_script()
+	var s: Script = obj.get_script()
 	if s == null:
 		return false
 
 	var obj_path: String = s.resource_path
-
-	# このインスペクタ自身のスクリプトが置かれているディレクトリを取得
-	var this_script: Script = get_script()
-	if this_script == null:
+	if obj_path == "":
 		return false
-	var base_dir: String = this_script.resource_path.get_base_dir()
 
-	# 同じディレクトリ内の terrain_atlas_pattern_placer.gd / TerrainAtlasPatternPlacer.gd を対象にする
-	var lower_path: String = base_dir + "/terrain_atlas_pattern_placer.gd"
-	var upper_path: String = base_dir + "/TerrainAtlasPatternPlacer.gd"
-
-	if obj_path == lower_path:
-		return true
-	if obj_path == upper_path:
+	if obj_path == TARGET_SCRIPT_PATH:
 		return true
 
 	return false
